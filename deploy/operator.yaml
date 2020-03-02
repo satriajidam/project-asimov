@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-asimov
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: project-asimov
+  template:
+    metadata:
+      labels:
+        name: project-asimov
+    spec:
+      serviceAccountName: project-asimov
+      containers:
+        - name: project-asimov
+          # Replace this with the built image name
+          image: REPLACE_IMAGE
+          command:
+          - project-asimov
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "project-asimov"
